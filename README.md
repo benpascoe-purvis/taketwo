@@ -1,3 +1,3 @@
-# Take-Two Chrome Extension
+# Take2 Chrome Extension
 
 TODO: Description

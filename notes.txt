@@ -1,0 +1,1 @@
+product_color = document.getElementsByClassName('color-name')[0].innerText
