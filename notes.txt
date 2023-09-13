@@ -1,1 +1,3 @@
 product_color = document.getElementsByClassName('color-name')[0].innerText
+
+https://www.theiconic.com.au/jill-mini-dress-1839349.html
