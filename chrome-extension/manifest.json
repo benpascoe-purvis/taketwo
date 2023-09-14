@@ -1,0 +1,10 @@
+{
+  "name": "Take2",
+  "description": "Take 2 - Find sustainable alternatives while online shopping.",
+  "version": "1.0",
+  "manifest_version": 3,
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "permissions": ["activeTab", "scripting"]
+}

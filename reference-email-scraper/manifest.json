@@ -1,6 +1,6 @@
 {
   "name": "Email Scraper",
-  "deescription": "Demo project to scrape emails from a page and display in the popup.",
+  "description": "Demo project to scrape emails from a page and display in the popup.",
   "version": "1.0",
   "manifest_version": 3,
   "action": {
