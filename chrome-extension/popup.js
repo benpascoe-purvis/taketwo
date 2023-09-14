@@ -13,7 +13,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     productCategory: request.productCategory,
   };
 
-  console.log(productDetails);
+  // alert(productDetails);
   if (productDetails == null) {
     let li = document.createElement("li");
     li.innerText = "Product details are NULL";
@@ -49,7 +49,9 @@ extractProductInfoButton.addEventListener("click", async () => {
 
 // Function to scrape emails
 function getProductColor() {
-  //RegEx to parse emails fom HTML code
+  // alert("extracting product details");
+
+  //TODO - Try/catch all of this
   const productColor =
     document.getElementsByClassName("color-name")[0].innerText;
 
