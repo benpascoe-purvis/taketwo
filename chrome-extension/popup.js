@@ -7,11 +7,10 @@ let productInfoList = document.getElementById("productInfoList");
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   //Get Emails
   let productDetails = {
-    color: request.productColor,
     title: request.productTitle,
+    color: request.productColor,
     brand: request.productBrand,
     productCategory: request.productCategory,
-    imageLink: request.imageLink,
   };
 
   console.log(productDetails);
@@ -20,6 +19,13 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     li.innerText = "Product details are NULL";
     productInfoList.appendChild(li);
   } else {
+    //Add image to Original Product Info
+    let originalProductImage = document.createElement("img");
+    originalProductImage.src = request.imageLink;
+    originalProductImage.width = 100;
+    productInfoList.appendChild(originalProductImage);
+
+    // List all product details passed in
     for (const [key, value] of Object.entries(productDetails)) {
       console.log(key, value);
       let li = document.createElement("li");
