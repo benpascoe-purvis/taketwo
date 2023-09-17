@@ -4,16 +4,21 @@
   "version": "1.0",
   "manifest_version": 3,
   "action": {
+    "default_title": "Find alternatives",
     "default_popup": "popup/popup.html"
   },
-  "permissions": ["activeTab", "scripting"],
+  "permissions": ["activeTab", "scripting", "tabs", "notifications"],
+  "host_permissions": ["https://www.theiconic.com.au/*"],
   "content_scripts": [
     {
       "matches": ["https://www.theiconic.com.au/*"],
-      "js": ["scripts/scraper.js"],
+      "js": ["content-scripts/scraper.js", "content-scripts/content.js"],
       "all_frames": true,
       "run_at": "document_idle",
       "world": "ISOLATED"
     }
-  ]
+  ],
+  "background": {
+    "service_worker": "background.js"
+  }
 }

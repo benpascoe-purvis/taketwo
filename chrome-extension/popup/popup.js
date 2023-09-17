@@ -9,6 +9,13 @@ let extractProductInfoButton = document.getElementById(
 );
 let productInfoList = document.getElementById("productInfoList");
 
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  let testMessage = request.testMessage;
+  let productColor = request.productColor;
+  console.log("Scraper: FROM POPUP: ", testMessage);
+  console.log("Scraper: FROM POPUP: ", productColor);
+});
+
 //Handler to receive messages from content script
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   let productDetails = {
@@ -51,7 +58,7 @@ extractProductInfoButton.addEventListener("click", async () => {
   });
 });
 
-// Function to scrape emails
+// Function to scrape products
 function getProductColor() {
   // alert("extracting product details");
 
