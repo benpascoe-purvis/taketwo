@@ -1,11 +1,21 @@
-let extractProductInfoButton = document.getElementById(
-  "extractProductInfoButton"
-);
-let productInfoList = document.getElementById("productInfoList");
+let extractProductInfoButton = document.querySelector("#extract-button");
+let productInfoList = document.querySelector("#info-list");
 
-//Handler to receive emails from content script
+// Run extract functions on click
+extractProductInfoButton.addEventListener("click", async () => {
+  let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+  chrome.scripting.executeScript({
+    target: { tabId: tab.id },
+    func: getProductColor,
+  });
+});
+
+function updatePopup(newTitle) {
+  let productTitle = document.querySelector("#product-title");
+}
+
+// // Listen for reponse
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  //Get Emails
   let productDetails = {
     title: request.productTitle,
     color: request.productColor,
@@ -13,13 +23,11 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     productCategory: request.productCategory,
   };
 
-  console.log(productDetails);
   if (productDetails == null) {
     let li = document.createElement("li");
     li.innerText = "Product details are NULL";
     productInfoList.appendChild(li);
   } else {
-    //Add image to Original Product Info
     let originalProductImage = document.createElement("img");
     originalProductImage.src = request.imageLink;
     originalProductImage.width = 100;
@@ -35,19 +43,6 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   }
 });
 
-// Buttons click event listener
-extractProductInfoButton.addEventListener("click", async () => {
-  //Get current active tab of chrome window
-  let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-
-  // Execute script to parse emails on page
-  chrome.scripting.executeScript({
-    target: { tabId: tab.id },
-    func: getProductColor,
-  });
-});
-
-// Function to scrape emails
 function getProductColor() {
   //RegEx to parse emails fom HTML code
   const productColor =
