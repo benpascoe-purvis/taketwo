@@ -29,9 +29,8 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   productImage.src = request.productImageLink;
   productImage.width = 100;
 
-  // TODO: Make dynamic
-  fetchAndPopulateData("yellow");
-  // fetchAndPopulateData(productColor.innerText);
+  fetchAndPopulateData("pink");
+  // fetchAndPopulateData(productColor.innerText);  //TODO: Fix bug in scraper API
 });
 
 // Hit Depop Scraper Endpoint + Populate GUI
