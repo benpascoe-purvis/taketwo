@@ -8,7 +8,7 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
         files: ["content-scripts/scraper.js"],
       })
       .then(() => {
-        console.log("Injected the scraper script!.");
+        console.log("Injected the scraper script.");
       })
       .catch((err) => console.log(err));
   }

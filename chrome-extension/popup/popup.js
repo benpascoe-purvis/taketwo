@@ -46,7 +46,8 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   }
 });
 
-// Buttons click event listener
+// FROM HERE DOWN SHOULD BE IN CONTENT SCRIPTS
+
 extractProductInfoButton.addEventListener("click", async () => {
   //Get current active tab of chrome window
   let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
