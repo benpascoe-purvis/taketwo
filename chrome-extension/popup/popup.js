@@ -1,11 +1,4 @@
 let extractProductInfoButton = document.querySelector("#extract-button");
-let productInfoList = document.querySelector("#info-list");
-
-let productTitle = document.querySelector("#product-title");
-let productColor = document.querySelector("#product-color");
-let productBrand = document.querySelector("#product-brand");
-let productCategory = document.querySelector("#product-category");
-let productImage = document.querySelector("#product-image");
 
 // Run extract functions on click
 extractProductInfoButton.addEventListener("click", async () => {
@@ -16,21 +9,22 @@ extractProductInfoButton.addEventListener("click", async () => {
   });
 });
 
-function validateInput(input) {
-  if (input == null) {
-    return "Not available";
-  }
-
-  return input;
-}
-
+// Update GUI w/ search details
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  productTitle.innerText = validateInput(request.productTitle);
-  productColor.innerText = validateInput(request.productColor);
-  productBrand.innerText = validateInput(request.productBrand);
-  productCategory.innerText = validateInput(request.productCategory);
+  let productTitle = document.querySelector("#product-title");
+  productTitle.innerText = request.productTitle;
 
-  productImage.src = validateInput(request.productImageLink);
+  let productColor = document.querySelector("#product-color");
+  productColor.innerText = request.productColor;
+
+  let productBrand = document.querySelector("#product-brand");
+  productBrand.innerText = request.productBrand;
+
+  let productCategory = document.querySelector("#product-category");
+  productCategory.innerText = request.productCategory;
+
+  let productImage = document.querySelector("#product-image");
+  productImage.src = request.productImageLink;
   productImage.width = 100;
 });
 
@@ -44,7 +38,6 @@ function getProductDetails() {
     .querySelector("li:last-child")
     .textContent.trim();
 
-  // alert(imageLink);
   //Send to popup
   chrome.runtime.sendMessage({
     productColor,
