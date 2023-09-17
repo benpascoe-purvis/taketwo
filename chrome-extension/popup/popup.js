@@ -1,22 +1,11 @@
-/* 
-This script runs when the extension is clicked/opened up. 
-It is to handle user interactions with the popup, and listen for messages. 
-*/
-
 let extractProductInfoButton = document.getElementById(
   "extractProductInfoButton"
 );
 let productInfoList = document.getElementById("productInfoList");
 
+//Handler to receive emails from content script
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  let testMessage = request.testMessage;
-  let productColor = request.productColor;
-  console.log("FROM POPUP: ", testMessage);
-  console.log("FROM POPUP: ", productColor);
-});
-
-//Handler to receive messages from content script
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  //Get Emails
   let productDetails = {
     title: request.productTitle,
     color: request.productColor,
@@ -24,6 +13,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     productCategory: request.productCategory,
   };
 
+  console.log(productDetails);
   if (productDetails == null) {
     let li = document.createElement("li");
     li.innerText = "Product details are NULL";
@@ -45,46 +35,43 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   }
 });
 
-// FROM HERE DOWN SHOULD BE IN CONTENT SCRIPTS
+// Buttons click event listener
+extractProductInfoButton.addEventListener("click", async () => {
+  //Get current active tab of chrome window
+  let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
 
-// extractProductInfoButton.addEventListener("click", async () => {
-//   //Get current active tab of chrome window
-//   let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+  // Execute script to parse emails on page
+  chrome.scripting.executeScript({
+    target: { tabId: tab.id },
+    func: getProductColor,
+  });
+});
 
-//   // Execute script to parse emails on page
-//   chrome.scripting.executeScript({
-//     target: { tabId: tab.id },
-//     func: getProductColor,
-//   });
-// });
+// Function to scrape emails
+function getProductColor() {
+  //RegEx to parse emails fom HTML code
+  const productColor =
+    document.getElementsByClassName("color-name")[0].innerText;
 
-// // Function to scrape products
-// function getProductColor() {
-//   // alert("extracting product details");
+  const productTitle =
+    document.getElementsByClassName("product-title")[0].innerText;
 
-//   //TODO - Try/catch all of this
-//   const productColor =
-//     document.getElementsByClassName("color-name")[0].innerText;
+  const productBrand =
+    document.getElementsByClassName("product-brand")[0].innerText;
 
-//   const productTitle =
-//     document.getElementsByClassName("product-title")[0].innerText;
+  const productCategory = document
+    .querySelector(".breadcrumbs")
+    .querySelector("li:last-child")
+    .textContent.trim();
 
-//   const productBrand =
-//     document.getElementsByClassName("product-brand")[0].innerText;
+  const imageLink = document.querySelector(".product-image-frame").href;
 
-//   const productCategory = document
-//     .querySelector(".breadcrumbs")
-//     .querySelector("li:last-child")
-//     .textContent.trim();
-
-//   const imageLink = document.querySelector(".product-image-frame").href;
-
-//   //Send emails to popup
-//   chrome.runtime.sendMessage({
-//     productColor,
-//     productTitle,
-//     productBrand,
-//     productCategory,
-//     imageLink,
-//   });
-// }
+  //Send emails to popup
+  chrome.runtime.sendMessage({
+    productColor,
+    productTitle,
+    productBrand,
+    productCategory,
+    imageLink,
+  });
+}
