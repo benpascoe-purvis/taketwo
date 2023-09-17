@@ -1,7 +1,6 @@
 /* 
 This script runs when the extension is clicked/opened up. 
-It also has listener functions for button clicks on the popup.html. 
-Its console is on the popup inspection page. 
+It is to handle user interactions with the popup, and listen for messages. 
 */
 
 let extractProductInfoButton = document.getElementById(
@@ -48,44 +47,44 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
 // FROM HERE DOWN SHOULD BE IN CONTENT SCRIPTS
 
-extractProductInfoButton.addEventListener("click", async () => {
-  //Get current active tab of chrome window
-  let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+// extractProductInfoButton.addEventListener("click", async () => {
+//   //Get current active tab of chrome window
+//   let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
 
-  // Execute script to parse emails on page
-  chrome.scripting.executeScript({
-    target: { tabId: tab.id },
-    func: getProductColor,
-  });
-});
+//   // Execute script to parse emails on page
+//   chrome.scripting.executeScript({
+//     target: { tabId: tab.id },
+//     func: getProductColor,
+//   });
+// });
 
-// Function to scrape products
-function getProductColor() {
-  // alert("extracting product details");
+// // Function to scrape products
+// function getProductColor() {
+//   // alert("extracting product details");
 
-  //TODO - Try/catch all of this
-  const productColor =
-    document.getElementsByClassName("color-name")[0].innerText;
+//   //TODO - Try/catch all of this
+//   const productColor =
+//     document.getElementsByClassName("color-name")[0].innerText;
 
-  const productTitle =
-    document.getElementsByClassName("product-title")[0].innerText;
+//   const productTitle =
+//     document.getElementsByClassName("product-title")[0].innerText;
 
-  const productBrand =
-    document.getElementsByClassName("product-brand")[0].innerText;
+//   const productBrand =
+//     document.getElementsByClassName("product-brand")[0].innerText;
 
-  const productCategory = document
-    .querySelector(".breadcrumbs")
-    .querySelector("li:last-child")
-    .textContent.trim();
+//   const productCategory = document
+//     .querySelector(".breadcrumbs")
+//     .querySelector("li:last-child")
+//     .textContent.trim();
 
-  const imageLink = document.querySelector(".product-image-frame").href;
+//   const imageLink = document.querySelector(".product-image-frame").href;
 
-  //Send emails to popup
-  chrome.runtime.sendMessage({
-    productColor,
-    productTitle,
-    productBrand,
-    productCategory,
-    imageLink,
-  });
-}
+//   //Send emails to popup
+//   chrome.runtime.sendMessage({
+//     productColor,
+//     productTitle,
+//     productBrand,
+//     productCategory,
+//     imageLink,
+//   });
+// }

@@ -7,12 +7,12 @@
     "default_title": "Find alternatives",
     "default_popup": "popup/popup.html"
   },
-  "permissions": ["activeTab", "scripting", "tabs", "notifications"],
+  "permissions": ["activeTab", "scripting"],
   "host_permissions": ["https://www.theiconic.com.au/*"],
   "content_scripts": [
     {
       "matches": ["https://www.theiconic.com.au/*"],
-      "js": ["content-scripts/scraper.js", "content-scripts/content.js"],
+      "js": ["content-scripts/scraper.js"],
       "all_frames": true,
       "run_at": "document_idle",
       "world": "ISOLATED"

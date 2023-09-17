@@ -11,5 +11,8 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
         console.log("Injected the scraper script.");
       })
       .catch((err) => console.log(err));
+
+    // Trigger the content script using a custom message
+    chrome.tabs.sendMessage(tabId, { action: "runScraper" });
   }
 });
