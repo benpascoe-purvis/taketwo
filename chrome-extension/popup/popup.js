@@ -12,8 +12,8 @@ let productInfoList = document.getElementById("productInfoList");
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   let testMessage = request.testMessage;
   let productColor = request.productColor;
-  console.log("Scraper: FROM POPUP: ", testMessage);
-  console.log("Scraper: FROM POPUP: ", productColor);
+  console.log("FROM POPUP: ", testMessage);
+  console.log("FROM POPUP: ", productColor);
 });
 
 //Handler to receive messages from content script

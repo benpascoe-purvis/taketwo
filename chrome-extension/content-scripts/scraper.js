@@ -14,9 +14,9 @@ and then sends a message back to popup.js.
   console.log(document.getElementsByClassName("color-name"));
   console.log("Scraper: Product color: ", productColor);
 
-  //   let testMessage = "This is a message from the Scraper JS";
-  //   chrome.runtime.sendMessage({
-  //     testMessage,
-  //     productColor,
-  //   });
+  let testMessage = "This is a message from the Scraper JS";
+  chrome.runtime.sendMessage({
+    testMessage,
+    productColor,
+  });
 }
