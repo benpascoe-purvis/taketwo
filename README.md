@@ -1,3 +1,9 @@
 # Take2 Chrome Extension
 
-TODO: Description
+## To Run
+
+Start the API
+
+```
+flask --app app run
+```

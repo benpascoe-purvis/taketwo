@@ -1,4 +1,4 @@
-export function scrapeDetails_iconic() {
+export function scrapeProductDetails_iconic() {
   const productColor = document.querySelector(".color-name").innerText;
   const productTitle = document.querySelector(".product-title").innerText;
   const productBrand = document.querySelector(".product-brand").innerText;
