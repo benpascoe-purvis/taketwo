@@ -1,6 +1,7 @@
 import { scrapeProductDetails_iconic } from "./scrapers.js";
 
 let extractProductInfoButton = document.querySelector("#extract-button");
+let extractDepopInfoButton = document.querySelector("#extract-depop-info");
 
 // Extract on click (remove listener to run on extension open)
 extractProductInfoButton.addEventListener("click", async () => {
@@ -29,7 +30,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   productImage.src = request.productImageLink;
   productImage.width = 100;
 
-  fetchAndPopulateData("pink");
+  // fetchAndPopulateData("pink");
   // fetchAndPopulateData(productColor.innerText);  //TODO: Fix bug in scraper API
 });
 
@@ -67,4 +68,67 @@ async function fetchAndPopulateData(item_color) {
   }
 
   document.getElementById("alternatives-list").innerHTML = alternativeOptions;
+}
+
+extractDepopInfoButton.addEventListener("click", async () => {
+  alert("Fetching depop");
+  fetchDepopData();
+});
+
+function fetchDepopData() {
+  fetch(
+    "https://www.depop.com/au/category/womens/dresses/?categories=11&colours=pink&categoryPath=womens&categoryPath=dresses"
+  )
+    .then(function (response) {
+      return response.text();
+    })
+    .then(function (html) {
+      var parser = new DOMParser();
+
+      var doc = parser.parseFromString(html, "text/html");
+
+      let productList = doc.querySelector('[data-testid="product__items"]');
+      let productItems = productList.querySelectorAll("li");
+
+      productItems.forEach((item) => {
+        try {
+          let productLinkEL = item.querySelector(
+            '[data-testid="product__item"]'
+          );
+          let productURL = new URL(productLinkEL.href);
+          let productLink = "https://www.depop.com" + productURL.pathname;
+
+          let imageLinkEl = item.querySelector(
+            '[data-testid="primaryProductImage"] img'
+          );
+
+          let imageLink = imageLinkEl.src || "NA";
+
+          let itemAttributes = item.querySelector(
+            '[data-testid="productListItem__attributes"]'
+          );
+
+          let itemPriceEl = itemAttributes.querySelector(
+            '[aria-label="Price"]'
+          );
+          let itemPrice = itemPriceEl.innerText || "NA";
+
+          let itemSizeEl = itemAttributes.querySelector('[aria-label="Size"]');
+          let itemSize = itemSizeEl.innerText || "NA";
+
+          console.log("Product Link: ", productLink);
+          console.log("Image Link: ", imageLink);
+          console.log("Price: ", itemPrice);
+          console.log("Size: ", itemSize);
+        } catch (error) {
+          console.log("ERROR: ", error);
+        }
+      });
+
+      let depopInfo = document.querySelector("#depop-info");
+      depopInfo.innerText = productList;
+    })
+    .catch(function (err) {
+      console.warn("Something went wrong.", err);
+    });
 }
