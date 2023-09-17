@@ -1,11 +1,16 @@
+/* 
+This script runs when the extension is clicked/opened up. 
+It also has listener functions for button clicks on the popup.html. 
+Its console is on the popup inspection page. 
+*/
+
 let extractProductInfoButton = document.getElementById(
   "extractProductInfoButton"
 );
 let productInfoList = document.getElementById("productInfoList");
 
-//Handler to receive emails from content script
+//Handler to receive messages from content script
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  //Get Emails
   let productDetails = {
     title: request.productTitle,
     color: request.productColor,
@@ -13,7 +18,6 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     productCategory: request.productCategory,
   };
 
-  // alert(productDetails);
   if (productDetails == null) {
     let li = document.createElement("li");
     li.innerText = "Product details are NULL";
