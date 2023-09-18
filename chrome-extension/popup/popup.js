@@ -90,6 +90,8 @@ function fetchDepopData() {
       let productList = doc.querySelector('[data-testid="product__items"]');
       let productItems = productList.querySelectorAll("li");
 
+      let alternativeItems = [];
+
       productItems.forEach((item) => {
         try {
           let productLinkEL = item.querySelector(
@@ -116,19 +118,47 @@ function fetchDepopData() {
           let itemSizeEl = itemAttributes.querySelector('[aria-label="Size"]');
           let itemSize = itemSizeEl.innerText || "NA";
 
-          console.log("Product Link: ", productLink);
-          console.log("Image Link: ", imageLink);
-          console.log("Price: ", itemPrice);
-          console.log("Size: ", itemSize);
+          alternativeItems.push({
+            link: productLink,
+            imageLink: imageLink,
+            itemPrice: itemPrice,
+            itemSize: itemSize,
+          });
         } catch (error) {
           console.log("ERROR: ", error);
         }
       });
 
-      let depopInfo = document.querySelector("#depop-info");
-      depopInfo.innerText = productList;
+      addDepopResultsToPopup(alternativeItems);
+
+      alert("collected depop info");
     })
     .catch(function (err) {
       console.warn("Something went wrong.", err);
     });
+}
+
+function addDepopResultsToPopup(alternativeItems) {
+  console.log("About to add results to GUI");
+  console.log(alternativeItems);
+
+  alternativeItems.forEach((item) => {
+    let divElement = document.createElement("div");
+    let liElement = document.createElement("li");
+
+    liElement.innerHTML = `
+      <a href="${item.link}" border="1px solid blue" target="_blank">
+      <div border="1px solid red">
+      <img src="${item.imageLink}" width=100 alt="Item Image" />
+      <p>Price: <b>${item.itemPrice}</b></p>
+      <p>Size: ${item.itemSize}</p>
+      </div>
+      </a>
+    `;
+
+    divElement.appendChild(liElement);
+
+    let depopInfo = document.querySelector("#depop-info");
+    depopInfo.appendChild(divElement);
+  });
 }
