@@ -34,44 +34,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   // fetchAndPopulateData(productColor.innerText);  //TODO: Fix bug in scraper API
 });
 
-// Hit Depop Scraper Endpoint + Populate GUI
-async function fetchAndPopulateData(item_color) {
-  const options = {
-    method: "GET",
-  };
-
-  const res = await fetch(
-    `http://127.0.0.1:5000/?item_colour=${item_color}`,
-    options
-  );
-
-  const record = await res.json();
-
-  console.log("record", record);
-
-  let alternativeOptions = "";
-
-  for (const key in record) {
-    console.log(`${key}: ${record[key].item_link}`);
-    let listing = record[key];
-    alternativeOptions =
-      alternativeOptions +
-      `<li>
-          <div>
-            <img src=${listing.item_pic_url} width='50px'/>
-            <a href=${listing.item_link}>${listing.item_name}</a><br />
-            <p> Price: ${listing.item_price} </p>
-            <p> Size: ${listing.item_size} </p>
-          <div>
-        </li>
-        `;
-  }
-
-  document.getElementById("alternatives-list").innerHTML = alternativeOptions;
-}
-
 extractDepopInfoButton.addEventListener("click", async () => {
-  alert("Fetching depop");
   fetchDepopData();
 });
 
@@ -130,8 +93,6 @@ function fetchDepopData() {
       });
 
       addDepopResultsToPopup(alternativeItems);
-
-      alert("collected depop info");
     })
     .catch(function (err) {
       console.warn("Something went wrong.", err);
