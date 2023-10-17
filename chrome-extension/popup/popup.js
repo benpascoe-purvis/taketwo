@@ -23,6 +23,9 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   let productBrand = document.querySelector("#product-brand");
   productBrand.innerText = request.productBrand;
 
+  let productGender = document.querySelector("#product-gender");
+  productGender.innerText = request.productGender;
+
   let productCategory = document.querySelector("#product-category");
   productCategory.innerText = request.productCategory;
 
@@ -40,7 +43,8 @@ extractDepopInfoButton.addEventListener("click", async () => {
 
 function fetchDepopData() {
   fetch(
-    "https://www.depop.com/au/category/womens/dresses/?categories=11&colours=pink&categoryPath=womens&categoryPath=dresses"
+    // "https://www.depop.com/au/category/womens/dresses/?categories=11&colours=pink&categoryPath=womens&categoryPath=dresses"
+    "https://www.depop.com/au/category/womens/dresses/?colours=pink"
   )
     .then(function (response) {
       return response.text();
