@@ -17,12 +17,6 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   let productTitle = document.querySelector("#product-title");
   productTitle.innerText = request.productTitle;
 
-  let productGender = document.querySelector("#product-gender");
-  productGender.innerText = request.productGender;
-
-  let productCategory = document.querySelector("#product-category");
-  productCategory.innerText = request.productCategory;
-
 extractDepopInfoButton.addEventListener("click", async () => {
   fetchDepopData();
 });
