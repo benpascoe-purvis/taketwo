@@ -1,4 +1,4 @@
-import { scrapeProductDetails_iconic } from "./scrapers.js";
+import { scrapeProductDetails_asos } from "./scrapers.js";
 
 let extractProductInfoButton = document.querySelector("#extract-button");
 let extractDepopInfoButton = document.querySelector("#extract-depop-info");
@@ -8,7 +8,7 @@ extractProductInfoButton.addEventListener("click", async () => {
   let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
   chrome.scripting.executeScript({
     target: { tabId: tab.id },
-    func: scrapeProductDetails_iconic,
+    func: scrapeProductDetails_asos,
   });
 });
 
@@ -17,25 +17,11 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   let productTitle = document.querySelector("#product-title");
   productTitle.innerText = request.productTitle;
 
-  let productColor = document.querySelector("#product-color");
-  productColor.innerText = request.productColor;
-
-  let productBrand = document.querySelector("#product-brand");
-  productBrand.innerText = request.productBrand;
-
   let productGender = document.querySelector("#product-gender");
   productGender.innerText = request.productGender;
 
   let productCategory = document.querySelector("#product-category");
   productCategory.innerText = request.productCategory;
-
-  let productImage = document.querySelector("#product-image");
-  productImage.src = request.productImageLink;
-  productImage.width = 100;
-
-  // fetchAndPopulateData("pink");
-  // fetchAndPopulateData(productColor.innerText);  //TODO: Fix bug in scraper API
-});
 
 extractDepopInfoButton.addEventListener("click", async () => {
   fetchDepopData();
