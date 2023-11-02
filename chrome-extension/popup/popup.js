@@ -1,21 +1,64 @@
-import { scrapeProductDetails_asos } from "./scrapers.js";
+import { scrapeProductDetails_asos, scrapeProductDetails_iconic } from './scrapers.js';
+
+console.log("start")
 
 let extractProductInfoButton = document.querySelector("#extract-button");
 let extractDepopInfoButton = document.querySelector("#extract-depop-info");
 
-// Extract on click (remove listener to run on extension open)
-extractProductInfoButton.addEventListener("click", async () => {
+async function runEverything() {
   let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-  chrome.scripting.executeScript({
-    target: { tabId: tab.id },
-    func: scrapeProductDetails_asos,
-  });
-});
+
+  const urlOfChromeExtension = window.location.hostname
+
+  const urlOfWindow = tab.url
+  console.log(tab.url);
+
+  const asosMatcher = new RegExp("https://www\.asos\.com.*")
+  const isWindowAsos = asosMatcher.test(tab.url)
+
+  const iconicMatcher = new RegExp('https://www.theiconic.com.au/*')
+  const isWindowIconic = iconicMatcher.test(tab.url)
+
+  if (isWindowAsos) {
+    console.log("hello2")
+    // Extract on click (remove listener to run on extension open)
+    extractProductInfoButton.addEventListener("click", async () => {
+      let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+      chrome.scripting.executeScript({
+        target: { tabId: tab.id },
+        func: scrapeProductDetails_asos,
+      });
+    });
+    // Listen for message from scraper and update GUI
+    chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+      let productTitle = document.querySelector("#productTitle");
+      productTitle.innerText = request.productTitle;
+    });
+
+  } else if (isWindowIconic) {
+    // Extract on click (remove listener to run on extension open)
+    extractProductInfoButton.addEventListener("click", async () => {
+      let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+      chrome.scripting.executeScript({
+        target: { tabId: tab.id },
+        func: scrapeProductDetails_iconic,
+      });
+    });
+  }
+}
 
 // Listen for message from scraper and update GUI
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   let productTitle = document.querySelector("#product-title");
   productTitle.innerText = request.productTitle;
+
+  let productColor = document.querySelector("#product-color");
+  productColor.innerText = request.productColor;
+
+  let productBrand = document.querySelector("#product-brand");
+  productBrand.innerText = request.productBrand;
+
+});
 
 extractDepopInfoButton.addEventListener("click", async () => {
   fetchDepopData();

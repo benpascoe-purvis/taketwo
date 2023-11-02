@@ -1,11 +1,11 @@
 {
-  "name": "Taketwo",
-  "description": "Taketwo - Find sustainable alternatives while online shopping.",
+  "name": "Take2",
+  "description": "Take 2 - Find sustainable alternatives while online shopping.",
   "version": "1.0",
   "manifest_version": 3,
   "action": {
     "default_popup": "popup/popup.html"
   },
   "permissions": ["activeTab", "scripting"],
-  "host_permissions": ["https://www.depop.com/*"]
+  "host_permissions": ["https://www.depop.com/*","https://www.theiconic.com.au/*", "https://www.asos.com/*"]
 }
